@@ -1,0 +1,125 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;LABEL  DIRECTIVE VALUE  COMMENT
+    2 00000000                 AREA             main, READONLY, CODE
+    3 00000000                 THUMB
+    4 00000000         
+    5 00000000                 EXPORT           CONVRT
+    6 00000000                 EXTERN           OutStr
+    7 00000000         
+    8 00000000         CONVRT  PROC
+    9 00000000         
+   10 00000000 B500            PUSH             {LR}
+   11 00000002         
+   12 00000002 F04F 000A       MOV              R0, #10
+   13 00000006 462E            MOV              R6, R5
+   14 00000008 4622            MOV              R2, R4
+   15 0000000A F04F 0804       LDR              R8, =0x04
+   16 0000000E F84D 8D04       PUSH             {R8}
+   17 00000012         
+   18 00000012 FBB2 F1F0 
+                       Loop1   UDIV             R1, R2, R0  ; Division by 10
+   19 00000016 2900            CMP              R1, #0
+   20 00000018 FB01 F100       MUL              R1, R1, R0
+   21 0000001C EBA2 0101       SUB              R1, R2, R1  ; R1 least signific
+                                                            ant decimal
+   22 00000020 F101 0930       ADD              R9, R1, #48 ; R2 ASCII
+   23 00000024 F84D 9D04       PUSH             {R9}
+   24 00000028 D004            BEQ              exit
+   25 0000002A EBA2 0201       SUB              R2, R2, R1  ; Least significant
+                                                             decimal cleared
+   26 0000002E FBB2 F2F0       UDIV             R2, R2, R0  ; R4 shifted right
+   27 00000032 E7EE            B                Loop1
+   28 00000034         exit
+   29 00000034 F85D 8B04 
+                       Loop2   POP              {R8}
+   30 00000038 F886 8000       STRB             R8, [R6]
+   31 0000003C F1B8 0F04       CMP              R8, #0x04
+   32 00000040 D002            BEQ              exit2
+   33 00000042 F106 0601       ADD              R6, #1
+   34 00000046 E7F5            B                Loop2
+   35 00000048         exit2
+   36 00000048 F85D EB04       POP              {LR}
+   37 0000004C 4770            BX               LR
+   38 0000004E         
+   39 0000004E                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\convrt.d -o.\objects\convrt.o -I"C:\Users\Emre Çak
+makyurdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123" --
+predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 536" --predefine=
+"TM4C123GH6PM SETA 1" --list=.\listings\convrt.lst ..\exp1_partA\CONVRT.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+CONVRT 00000000
+
+Symbol: CONVRT
+   Definitions
+      At line 8 in file ..\exp1_partA\CONVRT.s
+   Uses
+      At line 5 in file ..\exp1_partA\CONVRT.s
+Comment: CONVRT used once
+Loop1 00000012
+
+Symbol: Loop1
+   Definitions
+      At line 18 in file ..\exp1_partA\CONVRT.s
+   Uses
+      At line 27 in file ..\exp1_partA\CONVRT.s
+Comment: Loop1 used once
+Loop2 00000034
+
+Symbol: Loop2
+   Definitions
+      At line 29 in file ..\exp1_partA\CONVRT.s
+   Uses
+      At line 34 in file ..\exp1_partA\CONVRT.s
+Comment: Loop2 used once
+exit 00000034
+
+Symbol: exit
+   Definitions
+      At line 28 in file ..\exp1_partA\CONVRT.s
+   Uses
+      At line 24 in file ..\exp1_partA\CONVRT.s
+Comment: exit used once
+exit2 00000048
+
+Symbol: exit2
+   Definitions
+      At line 35 in file ..\exp1_partA\CONVRT.s
+   Uses
+      At line 32 in file ..\exp1_partA\CONVRT.s
+Comment: exit2 used once
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 2 in file ..\exp1_partA\CONVRT.s
+   Uses
+      None
+Comment: main unused
+6 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+OutStr 00000000
+
+Symbol: OutStr
+   Definitions
+      At line 6 in file ..\exp1_partA\CONVRT.s
+   Uses
+      None
+Comment: OutStr unused
+1 symbol
+341 symbols in table

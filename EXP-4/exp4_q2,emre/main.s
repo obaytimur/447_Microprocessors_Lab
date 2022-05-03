@@ -1,0 +1,18 @@
+		AREA	main,	READONLY,	CODE
+		THUMB
+		
+		EXPORT 	__main
+		EXTERN	PULSE_INIT
+		EXTERN	INIT
+		EXTERN	HANDLER
+		EXTERN	deneme
+		
+__main	PROC
+		BL	PULSE_INIT
+		BL	INIT
+		BL	HANDLER
+done	NOP
+		B	done
+		
+		ENDP
+		END

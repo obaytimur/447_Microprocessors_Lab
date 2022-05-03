@@ -1,0 +1,91 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 400053FC 
+                       GPIO_PORTB_DATA
+                               EQU              0x400053FC
+    2 00000000                 AREA             subroutine, READONLY, CODE
+    3 00000000                 THUMB
+    4 00000000         
+    5 00000000                 EXPORT           ISR1
+    6 00000000         ; BACKWARD   
+    7 00000000         ISR1    PROC
+    8 00000000 4D09            LDR              R5, =GPIO_PORTB_DATA
+    9 00000002 F04F 0101       MOV              R1, #1
+   10 00000006 F04F 0000       MOV              R0, #0
+   11 0000000A 682A            LDR              R2, [R5]    ; Obtain the input 
+                                                            data
+   12 0000000C F002 020F       AND              R2, #0xF    ; Understand which 
+                                                            key is pressed
+   13 00000010 4282            CMP              R2, R0      ; Compare with 0
+   14 00000012 BF08 2208       MOVEQ            R2, #8
+   15 00000016 D005            BEQ              exit
+   16 00000018 4291            CMP              R1, R2      ; If this is the la
+                                                            st sequence start o
+                                                            ver
+   17 0000001A BF08 2208       MOVEQ            R2, #8
+   18 0000001E D001            BEQ              exit
+   19 00000020 EA4F 0252       LSR              R2, R2, #1  ; Next output port
+   20 00000024 602A    exit    STR              R2, [R5]    ; Store the value
+   21 00000026 4770            BX               LR
+   22 00000028                 ALIGN
+   23 00000028                 ENDP
+   24 00000028         
+                       
+              400053FC 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\isr1.d -o.\objects\isr1.o -I"C:\Users\Emre Çakmaky
+urdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123" --pred
+efine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 536" --predefine="TM4
+C123GH6PM SETA 1" --list=.\listings\isr1.lst ISR1.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+ISR1 00000000
+
+Symbol: ISR1
+   Definitions
+      At line 7 in file ISR1.s
+   Uses
+      At line 5 in file ISR1.s
+Comment: ISR1 used once
+exit 00000024
+
+Symbol: exit
+   Definitions
+      At line 20 in file ISR1.s
+   Uses
+      At line 15 in file ISR1.s
+      At line 18 in file ISR1.s
+
+subroutine 00000000
+
+Symbol: subroutine
+   Definitions
+      At line 2 in file ISR1.s
+   Uses
+      None
+Comment: subroutine unused
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+GPIO_PORTB_DATA 400053FC
+
+Symbol: GPIO_PORTB_DATA
+   Definitions
+      At line 1 in file ISR1.s
+   Uses
+      At line 8 in file ISR1.s
+Comment: GPIO_PORTB_DATA used once
+1 symbol
+340 symbols in table

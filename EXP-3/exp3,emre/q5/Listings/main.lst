@@ -1,0 +1,90 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000                 AREA             main, READONLY, CODE
+    3 00000000                 THUMB
+    4 00000000                 EXPORT           __main
+    5 00000000                 EXTERN           PORTBCONFIG
+    6 00000000                 EXTERN           INITSYSTICK
+    7 00000000                 EXTERN           DELAY100ms
+    8 00000000                 EXTERN           DRIVE
+    9 00000000         
+   10 00000000         __main
+   11 00000000 F7FF FFFE       BL               PORTBCONFIG
+   12 00000004 F7FF FFFE       BL               INITSYSTICK
+   13 00000008 B662            CPSIE            I
+   14 0000000A F7FF FFFE       BL               DRIVE
+   15 0000000E         
+   16 0000000E                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I"C:\Users\Emre Çakmaky
+urdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123" --pred
+efine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 536" --predefine="TM4
+C123GH6PM SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 10 in file main.s
+   Uses
+      At line 4 in file main.s
+Comment: __main used once
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 2 in file main.s
+   Uses
+      None
+Comment: main unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+DELAY100ms 00000000
+
+Symbol: DELAY100ms
+   Definitions
+      At line 7 in file main.s
+   Uses
+      None
+Comment: DELAY100ms unused
+DRIVE 00000000
+
+Symbol: DRIVE
+   Definitions
+      At line 8 in file main.s
+   Uses
+      At line 14 in file main.s
+Comment: DRIVE used once
+INITSYSTICK 00000000
+
+Symbol: INITSYSTICK
+   Definitions
+      At line 6 in file main.s
+   Uses
+      At line 12 in file main.s
+Comment: INITSYSTICK used once
+PORTBCONFIG 00000000
+
+Symbol: PORTBCONFIG
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 11 in file main.s
+Comment: PORTBCONFIG used once
+4 symbols
+340 symbols in table

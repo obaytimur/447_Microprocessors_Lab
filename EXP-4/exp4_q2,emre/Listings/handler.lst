@@ -1,0 +1,412 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; 16/32 Timer Registers
+    2 00000000 4003101C 
+                       TIMER1_RIS
+                               EQU              0x4003101C  ; Timer Interrupt S
+                                                            tatus
+    3 00000000 40031024 
+                       TIMER1_ICR
+                               EQU              0x40031024  ; Timer Interrupt C
+                                                            lear
+    4 00000000 40031048 
+                       TIMER1_TAR
+                               EQU              0x40031048  ; Timer register
+    5 00000000         
+    6 00000000         ;GPIO Registers
+    7 00000000 40005040 
+                       GPIO_PORTB_DATA
+                               EQU              0x40005040  ; Access BIT4
+    8 00000000         
+    9 00000000                 AREA             sdata, READONLY, CODE
+   10 00000000                 THUMB
+   11 00000000 50 65 72 
+              69 6F 64 
+              20 28 6E 
+              73 29 3A MSG1    DCB              "Period (ns):"
+   12 0000000C 04              DCB              0x04
+   13 0000000D 0D              DCB              0x0D
+   14 0000000E 50 75 6C 
+              73 65 20 
+              57 69 64 
+              74 68 20 
+              28 6E 73 
+              29 3A    MSG2    DCB              "Pulse Width (ns):"
+   15 0000001F 04              DCB              0x04
+   16 00000020 0D              DCB              0x0D
+   17 00000021 44 75 74 
+              79 20 43 
+              79 63 6C 
+              65 20 28 
+              25 29 3A MSG3    DCB              "Duty Cycle (%):"
+   18 00000030 04              DCB              0x04
+   19 00000031 0D              DCB              0x0D
+   20 00000032         
+   21 00000032                 AREA             routines, CODE, READONLY
+   22 00000000                 THUMB
+   23 00000000         
+   24 00000000                 EXPORT           HANDLER
+   25 00000000                 EXTERN           OutStr
+   26 00000000                 EXTERN           CONVRT
+   27 00000000         HANDLER PROC
+   28 00000000 B500            PUSH             {LR}
+   29 00000002         ; Memory for positive-negative edge values
+   30 00000002 4B3E            LDR              R3, =0x20000400
+   31 00000004         ; Memory for timer values
+   32 00000004 4F3E            LDR              R7, =0x20000500
+   33 00000006         ; Capture amount
+   34 00000006 F04F 0800       MOV              R8, #0
+   35 0000000A         
+   36 0000000A 493E    mainloop
+                               LDR              R1, =TIMER1_RIS ; Constantly ch
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+                                                            eck the CAERIS bit
+   37 0000000C 680A    waitforcapture
+                               LDR              R2, [R1]    ; If there is no ca
+                                                            pture 
+   38 0000000E 2A04            CMP              R2, #0x04   ; wait for capture
+   39 00000010 D1FB            BNE              mainloop
+   40 00000012         
+   41 00000012 F108 0801       ADD              R8, R8, #1  ; Increment capture
+                                                             amount
+   42 00000016         
+   43 00000016 493C            LDR              R1, =TIMER1_TAR 
+                                                            ; Get timer value
+   44 00000018 680A            LDR              R2, [R1]
+   45 0000001A F847 2B04       STR              R2, [R7], #4 ; Store time value
+                                                             when edge is detec
+                                                            ted
+   46 0000001E         
+   47 0000001E 493B            LDR              R1, =GPIO_PORTB_DATA ;Obtain th
+                                                            e input data
+   48 00000020 680A            LDR              R2, [R1]
+   49 00000022         
+   50 00000022 F04F 0400       MOV              R4, #0
+   51 00000026 F04F 0501       MOV              R5, #1
+   52 0000002A         
+   53 0000002A 2A10            CMP              R2, #0x10   ; Compare PB4 with 
+                                                            1
+   54 0000002C BF0C F803 
+              5B01             STRBEQ           R5, [R3], #1 ; If positive edge
+                                                             store value
+   55 00000032 F803 4B01       STRBNE           R4, [R3], #1 ; If negative edge
+                                                             store value
+   56 00000036         
+   57 00000036 F1B8 0F03       CMP              R8, #3
+   58 0000003A D004            BEQ              exit
+   59 0000003C         
+   60 0000003C 4934            LDR              R1, =TIMER1_ICR ; Clear Timer1 
+                                                            CAERIS bit
+   61 0000003E F04F 0004       MOV              R0, #0x04
+   62 00000042 6008            STR              R0, [R1]
+   63 00000044         
+   64 00000044 E7E1            B                mainloop
+   65 00000046         
+   66 00000046         exit                                 ; Memory for positi
+                                                            ve-negative edge va
+                                                            lues
+   67 00000046 4B2D            LDR              R3, =0x20000400
+   68 00000048         ; Memory for timer values
+   69 00000048 4F2D            LDR              R7, =0x20000500
+   70 0000004A         
+   71 0000004A 7819            LDRB             R1, [R3]
+   72 0000004C 2901            CMP              R1, #1
+   73 0000004E D10F            BNE              Negedge
+   74 00000050 F857 0B04       LDR              R0, [R7], #4 ; First pos edge
+   75 00000054 F857 1B04       LDR              R1, [R7], #4 ; First neg edge
+   76 00000058 683A            LDR              R2, [R7]    ; Second pos edge
+   77 0000005A         
+   78 0000005A EBA0 0302       SUB              R3, R0, R2  ; Period
+   79 0000005E EBA0 0701       SUB              R7, R0, R1  ; Pulse width
+   80 00000062 F04F 0864       MOV              R8, #100
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   81 00000066 FB07 F608       MUL              R6, R7, R8  ; find duty cycle
+   82 0000006A FBB6 F6F3       UDIV             R6, R6, R3  ; D = (Pulse Width 
+                                                            *100)/Period
+   83 0000006E E00E            B                out
+   84 00000070         ; If first edge is negative edge
+   85 00000070 F857 0B04 
+                       Negedge LDR              R0, [R7], #4 ; First neg edge
+   86 00000074 F857 1B04       LDR              R1, [R7], #4 ; First pos edge
+   87 00000078 683A            LDR              R2, [R7]    ; Second neg edge
+   88 0000007A         
+   89 0000007A EBA0 0302       SUB              R3, R0, R2  ; Period
+   90 0000007E EBA1 0702       SUB              R7, R1, R2  ; Pulse width
+   91 00000082 F04F 0864       MOV              R8, #100
+   92 00000086 FB07 F608       MUL              R6, R7, R8  ; find duty cycle
+   93 0000008A FBB6 F6F3       UDIV             R6, R6, R3  ; D = (Pulse Width 
+                                                            *100)/Period
+   94 0000008E         
+   95 0000008E         ; If first edge is positive edge
+   96 0000008E         ; Since 1 cycle is 62.5ns find period and pulse width as
+                        nanoseconds
+   97 0000008E F240 2071 
+                       out     MOV              R0, #625
+   98 00000092 F04F 010A       MOV              R1, #10
+   99 00000096 FB03 F300       MUL              R3, R0
+  100 0000009A FBB3 F3F1       UDIV             R3, R1      ; Find period as se
+                                                            conds
+  101 0000009E FB07 F700       MUL              R7, R0
+  102 000000A2 FBB7 F7F1       UDIV             R7, R1      ; Find pulse width 
+                                                            as seconds
+  103 000000A6         
+  104 000000A6         ; Period print
+  105 000000A6 4D1B            LDR              R5, =MSG1
+  106 000000A8 F7FF FFFE       BL               OutStr
+  107 000000AC 4D1A            LDR              R5, =0x20005000
+  108 000000AE 461C            MOV              R4, R3
+  109 000000B0 B420            PUSH             {R5}        ; CONVRT and OutStr
+                                                             changes R5, R6. So
+                                                            , in order not to l
+                                                            ose them
+  110 000000B2 B440            PUSH             {R6}        ; push them into st
+                                                            ack
+  111 000000B4 F7FF FFFE       BL               CONVRT
+  112 000000B8 BC40            POP              {R6}
+  113 000000BA F7FF FFFE       BL               OutStr
+  114 000000BE BC20            POP              {R5}
+  115 000000C0         
+  116 000000C0         ; Pulse width print
+  117 000000C0 4D16            LDR              R5, =MSG2
+  118 000000C2 F7FF FFFE       BL               OutStr
+  119 000000C6 4D14            LDR              R5, =0x20005000
+  120 000000C8 463C            MOV              R4, R7
+  121 000000CA B420            PUSH             {R5}        ; CONVRT and OutStr
+                                                             changes R5, R6. So
+                                                            , in order not to l
+                                                            ose them
+  122 000000CC B440            PUSH             {R6}        ; push them into st
+                                                            ack
+  123 000000CE F7FF FFFE       BL               CONVRT
+  124 000000D2 BC40            POP              {R6}
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+  125 000000D4 F7FF FFFE       BL               OutStr
+  126 000000D8 BC20            POP              {R5}
+  127 000000DA         
+  128 000000DA         ; Duty Cycle print
+  129 000000DA 4D11            LDR              R5, =MSG3
+  130 000000DC F7FF FFFE       BL               OutStr
+  131 000000E0 4D0D            LDR              R5, =0x20005000
+  132 000000E2 4634            MOV              R4, R6
+  133 000000E4 B420            PUSH             {R5}        ; CONVRT and OutStr
+                                                             changes R5, R6. So
+                                                            , in order not to l
+                                                            ose them
+  134 000000E6 B440            PUSH             {R6}        ; push them into st
+                                                            ack
+  135 000000E8 F7FF FFFE       BL               CONVRT
+  136 000000EC BC40            POP              {R6}
+  137 000000EE F7FF FFFE       BL               OutStr
+  138 000000F2 BC20            POP              {R5}
+  139 000000F4         
+  140 000000F4 F85D EB04       POP              {LR}
+  141 000000F8 4770            BX               LR
+  142 000000FA                 ENDP
+  143 000000FA                 END
+              00 00 20000400 
+              20000500 
+              4003101C 
+              40031048 
+              40005040 
+              40031024 
+              00000000 
+              20005000 
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\handler.d -o.\objects\handler.o -I"C:\Users\Emre Ç
+akmakyurdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123" 
+--predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 536" --predefin
+e="TM4C123GH6PM SETA 1" --list=.\listings\handler.lst HANDLER.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MSG1 00000000
+
+Symbol: MSG1
+   Definitions
+      At line 11 in file HANDLER.s
+   Uses
+      At line 105 in file HANDLER.s
+Comment: MSG1 used once
+MSG2 0000000E
+
+Symbol: MSG2
+   Definitions
+      At line 14 in file HANDLER.s
+   Uses
+      At line 117 in file HANDLER.s
+Comment: MSG2 used once
+MSG3 00000021
+
+Symbol: MSG3
+   Definitions
+      At line 17 in file HANDLER.s
+   Uses
+      At line 129 in file HANDLER.s
+Comment: MSG3 used once
+sdata 00000000
+
+Symbol: sdata
+   Definitions
+      At line 9 in file HANDLER.s
+   Uses
+      None
+Comment: sdata unused
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+HANDLER 00000000
+
+Symbol: HANDLER
+   Definitions
+      At line 27 in file HANDLER.s
+   Uses
+      At line 24 in file HANDLER.s
+Comment: HANDLER used once
+Negedge 00000070
+
+Symbol: Negedge
+   Definitions
+      At line 85 in file HANDLER.s
+   Uses
+      At line 73 in file HANDLER.s
+Comment: Negedge used once
+exit 00000046
+
+Symbol: exit
+   Definitions
+      At line 66 in file HANDLER.s
+   Uses
+      At line 58 in file HANDLER.s
+Comment: exit used once
+mainloop 0000000A
+
+Symbol: mainloop
+   Definitions
+      At line 36 in file HANDLER.s
+   Uses
+      At line 39 in file HANDLER.s
+      At line 64 in file HANDLER.s
+
+out 0000008E
+
+Symbol: out
+   Definitions
+      At line 97 in file HANDLER.s
+   Uses
+      At line 83 in file HANDLER.s
+Comment: out used once
+routines 00000000
+
+Symbol: routines
+   Definitions
+      At line 21 in file HANDLER.s
+   Uses
+      None
+Comment: routines unused
+waitforcapture 0000000C
+
+Symbol: waitforcapture
+   Definitions
+      At line 37 in file HANDLER.s
+   Uses
+      None
+Comment: waitforcapture unused
+7 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+GPIO_PORTB_DATA 40005040
+
+Symbol: GPIO_PORTB_DATA
+   Definitions
+      At line 7 in file HANDLER.s
+   Uses
+      At line 47 in file HANDLER.s
+Comment: GPIO_PORTB_DATA used once
+TIMER1_ICR 40031024
+
+Symbol: TIMER1_ICR
+   Definitions
+      At line 3 in file HANDLER.s
+   Uses
+      At line 60 in file HANDLER.s
+Comment: TIMER1_ICR used once
+TIMER1_RIS 4003101C
+
+Symbol: TIMER1_RIS
+   Definitions
+      At line 2 in file HANDLER.s
+   Uses
+      At line 36 in file HANDLER.s
+Comment: TIMER1_RIS used once
+TIMER1_TAR 40031048
+
+Symbol: TIMER1_TAR
+   Definitions
+      At line 4 in file HANDLER.s
+   Uses
+      At line 43 in file HANDLER.s
+Comment: TIMER1_TAR used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+CONVRT 00000000
+
+Symbol: CONVRT
+   Definitions
+      At line 26 in file HANDLER.s
+   Uses
+      At line 111 in file HANDLER.s
+      At line 123 in file HANDLER.s
+      At line 135 in file HANDLER.s
+
+OutStr 00000000
+
+Symbol: OutStr
+   Definitions
+      At line 25 in file HANDLER.s
+   Uses
+      At line 106 in file HANDLER.s
+      At line 113 in file HANDLER.s
+      At line 118 in file HANDLER.s
+      At line 125 in file HANDLER.s
+      At line 130 in file HANDLER.s
+      At line 137 in file HANDLER.s
+
+2 symbols
+353 symbols in table

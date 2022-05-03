@@ -1,0 +1,107 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 400053FC 
+                       GPIO_PORTB_DATA
+                               EQU              0x400053FC
+    2 00000000                 AREA             main, READONLY, CODE
+    3 00000000                 THUMB
+    4 00000000         
+    5 00000000                 EXTERN           PORTBCONFIG
+    6 00000000                 EXTERN           DELAY100ms
+    7 00000000                 EXTERN           STEPDRIVE
+    8 00000000                 EXPORT           __main
+    9 00000000         
+   10 00000000         __main
+   11 00000000 B672            CPSID            I
+   12 00000002 F7FF FFFE       BL               PORTBCONFIG
+   13 00000006 F7FF FFFE       BL               STEPDRIVE
+   14 0000000A         ;BL  DELAY100ms
+   15 0000000A E7FE    loop    B                loop
+   16 0000000C                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I"C:\Users\Emre Çakmaky
+urdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123" --pred
+efine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 536" --predefine="TM4
+C123GH6PM SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 10 in file main.s
+   Uses
+      At line 8 in file main.s
+Comment: __main used once
+loop 0000000A
+
+Symbol: loop
+   Definitions
+      At line 15 in file main.s
+   Uses
+      At line 15 in file main.s
+Comment: loop used once
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 2 in file main.s
+   Uses
+      None
+Comment: main unused
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+GPIO_PORTB_DATA 400053FC
+
+Symbol: GPIO_PORTB_DATA
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: GPIO_PORTB_DATA unused
+1 symbol
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+DELAY100ms 00000000
+
+Symbol: DELAY100ms
+   Definitions
+      At line 6 in file main.s
+   Uses
+      None
+Comment: DELAY100ms unused
+PORTBCONFIG 00000000
+
+Symbol: PORTBCONFIG
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 12 in file main.s
+Comment: PORTBCONFIG used once
+STEPDRIVE 00000000
+
+Symbol: STEPDRIVE
+   Definitions
+      At line 7 in file main.s
+   Uses
+      At line 13 in file main.s
+Comment: STEPDRIVE used once
+3 symbols
+341 symbols in table

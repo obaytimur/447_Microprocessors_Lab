@@ -1,0 +1,58 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             subroutine, READONLY, CODE
+    2 00000000                 THUMB
+    3 00000000                 EXPORT           DELAY100ms
+    4 00000000         
+    5 00000000         DELAY100ms
+    6 00000000 F44F 20C0       LDR              R0, =0x60000
+    7 00000004 1E40    loop    SUBS             R0, R0, #1
+    8 00000006         ;NOP
+    9 00000006 BF00            NOP
+   10 00000008 D1FC            BNE              loop
+   11 0000000A         
+   12 0000000A 4770            BX               LR
+   13 0000000C                 ALIGN
+   14 0000000C                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\delay100ms.d -o.\objects\delay100ms.o -I"C:\Users\
+Emre Çakmakyurdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4
+C123" --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 536" --pr
+edefine="TM4C123GH6PM SETA 1" --list=.\listings\delay100ms.lst ..\q3\DELAY100ms
+.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+DELAY100ms 00000000
+
+Symbol: DELAY100ms
+   Definitions
+      At line 5 in file ..\q3\DELAY100ms.s
+   Uses
+      At line 3 in file ..\q3\DELAY100ms.s
+Comment: DELAY100ms used once
+loop 00000004
+
+Symbol: loop
+   Definitions
+      At line 7 in file ..\q3\DELAY100ms.s
+   Uses
+      At line 10 in file ..\q3\DELAY100ms.s
+Comment: loop used once
+subroutine 00000000
+
+Symbol: subroutine
+   Definitions
+      At line 1 in file ..\q3\DELAY100ms.s
+   Uses
+      None
+Comment: subroutine unused
+3 symbols
+337 symbols in table

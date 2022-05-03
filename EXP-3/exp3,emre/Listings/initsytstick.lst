@@ -1,0 +1,146 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 E000E010 
+                       ST_CTRL EQU              0xE000E010
+    2 00000000 E000E014 
+                       ST_RELOAD
+                               EQU              0xE000E014
+    3 00000000 E000E018 
+                       ST_CURRENT
+                               EQU              0xE000E018
+    4 00000000 E000ED20 
+                       SYS_PRI EQU              0xE000ED20
+    5 00000000 00010000 
+                       RELOAD_VAL
+                               EQU              0x00010000
+    6 00000000                 AREA             subroutine, READONLY, CODE, ALI
+GN=2
+    7 00000000                 THUMB
+    8 00000000                 EXPORT           INITSYSTICK
+    9 00000000         
+   10 00000000         INITSYSTICK
+                               PROC
+   11 00000000         
+   12 00000000 4909            LDR              R1, =ST_CTRL ; Disable the cloc
+                                                            k first
+   13 00000002 F04F 0000       MOV              R0, #0
+   14 00000006 6008            STR              R0, [R1]
+   15 00000008         
+   16 00000008 4908            LDR              R1, =ST_RELOAD ; Load the initi
+                                                            al value that is de
+                                                            cremented
+   17 0000000A F44F 3080       LDR              R0, =RELOAD_VAL
+   18 0000000E 6008            STR              R0, [R1]
+   19 00000010         
+   20 00000010 4907            LDR              R1, =ST_CURRENT ; Load same to 
+                                                            current
+   21 00000012 6008            STR              R0, [R1]
+   22 00000014         
+   23 00000014 4907            LDR              R1, =SYS_PRI 
+                                                            ; Set priority to 2
+                                                            
+   24 00000016 F04F 4080       MOV              R0, #0x40000000 
+                                                            ;priority level 2
+   25 0000001A 6008            STR              R0, [R1]
+   26 0000001C         
+   27 0000001C 4902            LDR              R1, =ST_CTRL ; Enable clock wit
+                                                            h interrupt
+   28 0000001E F04F 0003       MOV              R0, #0x03
+   29 00000022 6008            STR              R0, [R1]
+   30 00000024 4770            BX               LR
+   31 00000026         
+   32 00000026 00 00           ALIGN
+   33 00000028                 ENDP
+                       
+              E000E010 
+              E000E014 
+              E000E018 
+              E000ED20 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\initsytstick.d -o.\objects\initsytstick.o -I"C:\Us
+ers\Emre Çakmakyurdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+\TM4C123" --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 536" 
+--predefine="TM4C123GH6PM SETA 1" --list=.\listings\initsytstick.lst INITSYTSTI
+CK.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+INITSYSTICK 00000000
+
+Symbol: INITSYSTICK
+   Definitions
+      At line 10 in file INITSYTSTICK.s
+   Uses
+      At line 8 in file INITSYTSTICK.s
+Comment: INITSYSTICK used once
+subroutine 00000000
+
+Symbol: subroutine
+   Definitions
+      At line 6 in file INITSYTSTICK.s
+   Uses
+      None
+Comment: subroutine unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+RELOAD_VAL 00010000
+
+Symbol: RELOAD_VAL
+   Definitions
+      At line 5 in file INITSYTSTICK.s
+   Uses
+      At line 17 in file INITSYTSTICK.s
+Comment: RELOAD_VAL used once
+ST_CTRL E000E010
+
+Symbol: ST_CTRL
+   Definitions
+      At line 1 in file INITSYTSTICK.s
+   Uses
+      At line 12 in file INITSYTSTICK.s
+      At line 27 in file INITSYTSTICK.s
+
+ST_CURRENT E000E018
+
+Symbol: ST_CURRENT
+   Definitions
+      At line 3 in file INITSYTSTICK.s
+   Uses
+      At line 20 in file INITSYTSTICK.s
+Comment: ST_CURRENT used once
+ST_RELOAD E000E014
+
+Symbol: ST_RELOAD
+   Definitions
+      At line 2 in file INITSYTSTICK.s
+   Uses
+      At line 16 in file INITSYTSTICK.s
+Comment: ST_RELOAD used once
+SYS_PRI E000ED20
+
+Symbol: SYS_PRI
+   Definitions
+      At line 4 in file INITSYTSTICK.s
+   Uses
+      At line 23 in file INITSYTSTICK.s
+Comment: SYS_PRI used once
+5 symbols
+343 symbols in table

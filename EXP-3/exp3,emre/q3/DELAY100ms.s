@@ -1,0 +1,14 @@
+			AREA subroutine, READONLY, CODE
+			THUMB
+			EXPORT DELAY100ms
+
+DELAY100ms
+		LDR	R0, =0x60000
+loop	SUBS	R0, R0, #1
+		;NOP
+		NOP
+		BNE		loop
+
+		BX LR
+		ALIGN
+		END

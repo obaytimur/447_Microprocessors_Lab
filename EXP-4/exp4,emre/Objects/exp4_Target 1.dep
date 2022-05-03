@@ -1,0 +1,5 @@
+Dependencies for Project 'exp4', Target 'Target 1': (DO NOT MODIFY !)
+CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
+F (..\..\..\Downloads\Pulse.s)(0x61DB3C0E)(--cpu Cortex-M4.fp.sp --pd "__EVAL SETA 1" -g --apcs=interwork -I"C:\Users\Emre Çakmakyurdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123"--pd "__UVISION_VERSION SETA 536" --pd "TM4C123GH6PM SETA 1"--list .\listings\pulse.lst --xref -o .\objects\pulse.o --depend .\objects\pulse.d)
+F (..\..\..\Downloads\Startup.s)(0x61DB2626)(--cpu Cortex-M4.fp.sp --pd "__EVAL SETA 1" -g --apcs=interwork -I"C:\Users\Emre Çakmakyurdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123"--pd "__UVISION_VERSION SETA 536" --pd "TM4C123GH6PM SETA 1"--list .\listings\startup.lst --xref -o .\objects\startup.o --depend .\objects\startup.d)
+F (.\main.s)(0x61DB3D4E)(--cpu Cortex-M4.fp.sp --pd "__EVAL SETA 1" -g --apcs=interwork -I"C:\Users\Emre Çakmakyurdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123"--pd "__UVISION_VERSION SETA 536" --pd "TM4C123GH6PM SETA 1"--list .\listings\main.lst --xref -o .\objects\main.o --depend .\objects\main.d)

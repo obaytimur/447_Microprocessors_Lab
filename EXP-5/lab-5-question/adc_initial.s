@@ -1,0 +1,101 @@
+SYSCTL_RCGCGPIO		EQU		0x400FE608 
+	
+GPIO_PORTE_DATA 	EQU 	0x400243FC
+GPIO_PORTE_DIR 		EQU 	0x40024400
+GPIO_PORTE_AMSEL 	EQU 	0x40024428
+GPIO_PORTE_AFSEL 	EQU 	0x40024420
+GPIO_PORTE_DEN 		EQU 	0x4002451C
+GPIO_PORTE_PUR 		EQU 	0x40024510 
+IOE 				EQU 	0x00       
+PUE 				EQU 	0x00 
+
+RCGCADC 			EQU 	0x400FE638 
+ADC0_ACTSS 			EQU 	0x40038000
+ADC0_RIS 			EQU 0x40038004
+ADC0_IM 			EQU 0x40038008
+ADC0_EMUX 			EQU 0x40038014
+ADC0_PSSI 			EQU 0x40038028
+ADC0_SSMUX3 		EQU 0x400380A0
+ADC0_SSCTL3 		EQU 0x400380A4
+ADC0_SSFIFO3 		EQU 0x400380A8 
+ADC0_PC 			EQU 0x40038FC4
+	
+					AREA		main, READONLY, CODE
+            		THUMB
+
+					EXPORT		adc_initial
+
+
+adc_initial			PROC
+					LDR R1, =RCGCADC
+					LDR R0, [R1]
+					ORR R0, R0, #0x01
+					STR R0, [R1]
+					NOP
+					NOP
+					NOP
+					NOP
+					NOP
+					
+					LDR R1,=SYSCTL_RCGCGPIO
+					LDR R0,[R1]
+					ORR R0,#0x10
+					STR R0 ,[R1]
+					NOP
+					NOP
+					NOP
+					
+					LDR R1, =GPIO_PORTE_AFSEL 
+					LDR R0, [R1] 
+					ORR R0, R0, #0x08 
+					STR R0, [R1] 
+					
+					LDR R1, =GPIO_PORTE_DIR
+					LDR R0,[R1]
+					BIC R0, R0, #0x08
+					STR R0, [R1] 
+					
+					LDR R1, =GPIO_PORTE_DEN
+					LDR R0, [R1]
+					BIC R0, R0, #0x08
+					STR R0, [R1]
+
+					LDR R1, =GPIO_PORTE_AMSEL 
+					LDR R0, [R1] 
+					ORR R0, R0, #0x08 				
+					STR R0, [R1] 
+					
+					LDR R1, =ADC0_ACTSS
+					LDR R0, [R1]
+					BIC R0, R0, #0x08 
+					STR R0, [R1]
+
+					LDR R1, =ADC0_EMUX
+					LDR R0, [R1]
+					BIC R0, R0, #0xF000
+					STR R0, [R1]
+					
+
+					LDR R1, =ADC0_SSMUX3
+					LDR R0, [R1]
+					BIC R0, R0, #0x000F 
+					STR R0, [R1]
+
+					LDR R1, =ADC0_SSCTL3
+					LDR R0, [R1]
+					ORR R0, R0, #0x06
+					STR R0, [R1]
+					
+					LDR R1, =ADC0_PC
+					LDR R0, [R1]
+					ORR R0, R0, #0x01
+					STR R0, [R1]
+					
+					LDR R1, =ADC0_ACTSS
+					LDR R0, [R1]
+					ORR R0, R0, #0x08 
+					STR R0, [R1] 
+					
+					BX LR
+					ENDP
+					END

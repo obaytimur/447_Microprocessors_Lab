@@ -1,0 +1,16 @@
+GPIO_PORTB_DATA		EQU 0x400053FC
+	
+		AREA	subroutine,	READONLY,	CODE
+		THUMB
+		EXPORT	q3
+			
+start	PROC
+		LDR		R4, =GPIO_PORTB_DATA
+		LDR		R0, [R4]
+		AND		R0, #0x30
+		CMP		R0, #0x30
+		BEQ		start
+		
+		
+		BX		LR
+		ENDP

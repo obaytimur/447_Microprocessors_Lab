@@ -1,0 +1,18 @@
+GPIO_PORTB_DATA		EQU 0x400053FC			
+		AREA	main,	READONLY,	CODE
+		THUMB
+		
+		EXTERN	PORTBCONFIG		
+		EXTERN	INITSYSTICK
+		EXPORT	__main
+		
+			
+__main
+		BL		PORTBCONFIG
+		BL		INITSYSTICK
+		CPSIE	I
+		
+test	NOP
+		B		test
+		
+		END

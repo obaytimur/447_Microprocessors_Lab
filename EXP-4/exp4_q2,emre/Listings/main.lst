@@ -1,0 +1,100 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             main, READONLY, CODE
+    2 00000000                 THUMB
+    3 00000000         
+    4 00000000                 EXPORT           __main
+    5 00000000                 EXTERN           PULSE_INIT
+    6 00000000                 EXTERN           INIT
+    7 00000000                 EXTERN           HANDLER
+    8 00000000                 EXTERN           deneme
+    9 00000000         
+   10 00000000         __main  PROC
+   11 00000000 F7FF FFFE       BL               PULSE_INIT
+   12 00000004 F7FF FFFE       BL               INIT
+   13 00000008 F7FF FFFE       BL               HANDLER
+   14 0000000C BF00    done    NOP
+   15 0000000E E7FD            B                done
+   16 00000010         
+   17 00000010                 ENDP
+   18 00000010                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I"C:\Users\Emre Çakmaky
+urdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123" --pred
+efine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 536" --predefine="TM4
+C123GH6PM SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 10 in file main.s
+   Uses
+      At line 4 in file main.s
+Comment: __main used once
+done 0000000C
+
+Symbol: done
+   Definitions
+      At line 14 in file main.s
+   Uses
+      At line 15 in file main.s
+Comment: done used once
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: main unused
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+HANDLER 00000000
+
+Symbol: HANDLER
+   Definitions
+      At line 7 in file main.s
+   Uses
+      At line 13 in file main.s
+Comment: HANDLER used once
+INIT 00000000
+
+Symbol: INIT
+   Definitions
+      At line 6 in file main.s
+   Uses
+      At line 12 in file main.s
+Comment: INIT used once
+PULSE_INIT 00000000
+
+Symbol: PULSE_INIT
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 11 in file main.s
+Comment: PULSE_INIT used once
+deneme 00000000
+
+Symbol: deneme
+   Definitions
+      At line 8 in file main.s
+   Uses
+      None
+Comment: deneme unused
+4 symbols
+341 symbols in table

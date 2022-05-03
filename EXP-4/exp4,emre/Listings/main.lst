@@ -1,0 +1,112 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 40005010 
+                       GPIO_PORTB_DATA
+                               EQU              0x40005010  ; Access BIT2
+    2 00000000 40031048 
+                       TIMER1_TAR
+                               EQU              0x40031048
+    3 00000000 4003100C 
+                       TIMER1_CTL
+                               EQU              0x4003100C
+    4 00000000                 AREA             main, READONLY, CODE
+    5 00000000                 THUMB
+    6 00000000         
+    7 00000000                 EXPORT           __main
+    8 00000000                 EXTERN           PULSE_INIT
+    9 00000000         
+   10 00000000         __main  PROC
+   11 00000000 F7FF FFFE       BL               PULSE_INIT
+   12 00000004         
+   13 00000004 BF00    done    NOP
+   14 00000006 E7FD            B                done
+   15 00000008         
+   16 00000008                 ENDP
+   17 00000008                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
+interwork --depend=.\objects\main.d -o.\objects\main.o -I"C:\Users\Emre Çakmaky
+urdu\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123" --pred
+efine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 536" --predefine="TM4
+C123GH6PM SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 10 in file main.s
+   Uses
+      At line 7 in file main.s
+Comment: __main used once
+done 00000004
+
+Symbol: done
+   Definitions
+      At line 13 in file main.s
+   Uses
+      At line 14 in file main.s
+Comment: done used once
+main 00000000
+
+Symbol: main
+   Definitions
+      At line 4 in file main.s
+   Uses
+      None
+Comment: main unused
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+GPIO_PORTB_DATA 40005010
+
+Symbol: GPIO_PORTB_DATA
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: GPIO_PORTB_DATA unused
+TIMER1_CTL 4003100C
+
+Symbol: TIMER1_CTL
+   Definitions
+      At line 3 in file main.s
+   Uses
+      None
+Comment: TIMER1_CTL unused
+TIMER1_TAR 40031048
+
+Symbol: TIMER1_TAR
+   Definitions
+      At line 2 in file main.s
+   Uses
+      None
+Comment: TIMER1_TAR unused
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+PULSE_INIT 00000000
+
+Symbol: PULSE_INIT
+   Definitions
+      At line 8 in file main.s
+   Uses
+      At line 11 in file main.s
+Comment: PULSE_INIT used once
+1 symbol
+341 symbols in table
